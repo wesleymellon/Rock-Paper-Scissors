@@ -1,0 +1,65 @@
+<html>
+<head>
+  <title>Page Title</title>
+</head>
+<body>
+  <script>
+    function computerPlay() {
+      let randomNumber = Math.floor(Math.random() * 3);
+      if (randomNumber == 0){
+        return "rock";
+      }
+      else if (randomNumber == 1){
+        return "paper";
+      }
+      else {return "scissors";}
+    }
+
+    function gameRound(playerSelection, computerSelection){
+      playerSelection = playerSelection.toLowerCase();
+
+      if ((playerSelection == "rock" && computerSelection == "scissors") ||
+        (playerSelection == "paper" && computerSelection == "rock") ||
+        (playerSelection == "scissors" && computerSelection == "paper")){
+        return "player win";
+      }
+
+      else if((playerSelection == "rock" && computerSelection == "paper") ||
+        (playerSelection == "paper" && computerSelection == "scissors") ||
+        (playerSelection == "scissors" && computerSelection == "rock")){
+        return  "computer win";
+      }
+
+      else{return};
+    }
+
+    function game(){
+      let playerScore = 0;
+      let computerScore = 0;
+      do {
+        let playerInput = prompt("What's your weapon of choice? Rock, Paper, or Scissors?");
+        let computerInput = computerPlay();
+        let outcome = gameRound(playerInput, computerInput);
+        if(outcome == "player win"){
+          playerScore++;
+          console.log(`Nice one, ${playerInput} beats ${computerInput}`);
+        }
+
+        else if(outcome == "computer win"){
+          computerScore++;
+          console.log(`I win this one, ${computerInput} beats ${playerInput}`);
+        }
+
+        console.log(`The score right now is Player: ${playerScore} vs Computer: ${computerScore}`);
+      } while(playerScore < 3 && computerScore < 3);
+      
+      if (playerScore > computerScore){
+        return `Congratulations! You beat me! The final score is ${playerScore} vs ${computerScore}`
+        }
+      else{
+        return `I win, better luck next time! The final score is Player: ${playerScore} vs Computer: ${computerScore}`
+      };
+    }
+  </script>
+</body>
+</html>

@@ -1,9 +1,24 @@
 <html>
 <head>
-  <title>Page Title</title>
+  <link href="index.css" type="text/css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  <title>Rock, Paper, Scissors</title>
 </head>
 <body>
+  <h1 id="title">Rock, Paper, Scissors</h1>
+  <div id="scoreContainer">
+    <div id="playerScore">Player Score: </div>
+    <div id="computerScore">Computer Score: </div>
+  </div>
+  <div id="imageContainer">
+    <input type="image" id="rock" src="images/Rock.png"></input>
+    <input type="image" id="paper" src="images/Paper.png"></input>
+    <input type="image" id="scissors" src="images/Scissors.png"></input>
+  </div>
+  <div id="message">Welcome to Rock, Paper, Scissors! First to Five, Wins!</div>
+
   <script>
+
     function computerPlay() {
       let randomNumber = Math.floor(Math.random() * 3);
       if (randomNumber == 0){
@@ -21,45 +36,91 @@
       if ((playerSelection == "rock" && computerSelection == "scissors") ||
         (playerSelection == "paper" && computerSelection == "rock") ||
         (playerSelection == "scissors" && computerSelection == "paper")){
+
+        message.innerHTML = `You win this round! Your choice of ${playerSelection} beats the computer's choice of ${computerSelection}`;
         return "player win";
       }
 
       else if((playerSelection == "rock" && computerSelection == "paper") ||
         (playerSelection == "paper" && computerSelection == "scissors") ||
         (playerSelection == "scissors" && computerSelection == "rock")){
+
+        message.innerHTML = `You lose this round! Your choice of ${playerSelection} loses to the computer's choice of ${computerSelection}`;
         return  "computer win";
       }
 
-      else{return};
-    }
-
-    function game(){
-      let playerScore = 0;
-      let computerScore = 0;
-      do {
-        let playerInput = prompt("What's your weapon of choice? Rock, Paper, or Scissors?");
-        let computerInput = computerPlay();
-        let outcome = gameRound(playerInput, computerInput);
-        if(outcome == "player win"){
-          playerScore++;
-          console.log(`Nice one, ${playerInput} beats ${computerInput}`);
-        }
-
-        else if(outcome == "computer win"){
-          computerScore++;
-          console.log(`I win this one, ${computerInput} beats ${playerInput}`);
-        }
-
-        console.log(`The score right now is Player: ${playerScore} vs Computer: ${computerScore}`);
-      } while(playerScore < 3 && computerScore < 3);
-      
-      if (playerScore > computerScore){
-        return `Congratulations! You beat me! The final score is ${playerScore} vs ${computerScore}`
-        }
       else{
-        return `I win, better luck next time! The final score is Player: ${playerScore} vs Computer: ${computerScore}`
+        message.innerHTML = `This round is a tie! You and the computer both chose ${playerSelection}`;
+        return "tie"
       };
     }
+
+    function addScore(winner){
+      if(winner == "player win"){
+        playerWins++;
+      }
+
+      else if(winner == "computer win"){
+        computerWins++;
+      }
+
+      if(isGameOver()){
+        if(playerWins == 5){
+
+          message.innerHTML = `Congrats, you won the game! The final score was Player: ${playerWins} vs. Computer: ${computerWins}`;
+        }
+
+        else if(computerWins == 5){
+          message.innerHTML = `Sorry, you lose this time! The computer won with a final score of Player: ${playerWins} vs. Computer: ${computerWins}`;
+        }
+        restartGame();
+      }
+
+      playerScore.innerHTML = `Player Score: ${playerWins}`;
+      computerScore.innerHTML = `Computer Score: ${computerWins}`;
+    }
+
+    function isGameOver(){
+      if(playerWins >= 5 || computerWins >= 5){
+        return true;
+      }
+      else{ return false; }
+    }
+
+    function restartGame(){
+      playerWins = 0;
+      computerWins = 0;
+    }
+
+    const playerScore = document.querySelector("#playerScore");
+    const computerScore = document.querySelector("#computerScore");
+    const message = document.querySelector("#message");
+    let playerWins = 0;
+    let computerWins = 0;
+
+    playerScore.textContent += `${playerWins}`;
+    computerScore.textContent += `${computerWins}`;
+
+
+    const rockButton = document.querySelector('#rock');
+    const paperButton =document.querySelector('#paper');
+    const scissorsButton = document.querySelector('#scissors');
+
+    rockButton.addEventListener("click", function(e){
+      let outcome = gameRound("rock", computerPlay());
+      addScore(outcome);
+    })
+
+    paperButton.addEventListener("click", function(e){
+      let outcome = gameRound("paper", computerPlay());
+      addScore(outcome);
+    })
+
+    scissorsButton.addEventListener("click", function(e){
+      let outcome = gameRound("scissors", computerPlay());
+      addScore(outcome);
+    })
+
   </script>
 </body>
 </html>
